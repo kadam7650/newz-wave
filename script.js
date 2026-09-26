@@ -109,12 +109,13 @@ async function loadArticles() {
   const params = new URLSearchParams();
   if (selectedCategory !== "All") params.set("category", selectedCategory);
   if (searchTerm) params.set("q", searchTerm);
-  let sourceStatus = "Demo headlines · configure GNEWS_API_KEY for live updates";
+  let sourceStatus = "Live updates · Google News";
   try {
     const response = await fetch(`/api/news?${params}`);
     if (response.ok) {
       const data = await response.json();
-      sourceStatus = data.source === "gnews" ? "Live updates · GNews" : sourceStatus;
+      if (data.source === "gnews") sourceStatus = "Live updates · GNews";
+      if (data.source === "demo") sourceStatus = "Demo headlines · news provider unavailable";
       if (Array.isArray(data.articles) && data.articles.length) liveArticles = data.articles;
     } else sourceStatus = "Live feed unavailable · showing sample headlines";
   } catch { sourceStatus = "Demo headlines · news server unavailable"; }

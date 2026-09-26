@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const Parser = require("rss-parser");
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 const GNEWS_API_KEY = process.env.GNEWS_API_KEY || process.env.NEWS_API_KEY;
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY;
 const publishedArticles = [];
+const rssParser = new Parser();
 
 app.use(cors());
 app.use(express.json());
@@ -27,14 +29,46 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", message: "Newz Wave backend is running", liveNewsConfigured: Boolean(GNEWS_API_KEY) });
+  res.json({ status: "ok", message: "Newz Wave backend is running", liveNewsConfigured: true, newsProvider: GNEWS_API_KEY ? "gnews" : "google-news-rss" });
 });
 
-app.get("/api/news", async (req, res) => {
-  if (!GNEWS_API_KEY) return res.json({ source: "demo", articles: [] });
+async function getGoogleNewsArticles(category, query) {
+  const topicMap = { India: "NATION", World: "WORLD", Technology: "TECHNOLOGY", Sports: "SPORTS", Business: "BUSINESS", Entertainment: "ENTERTAINMENT" };
+  const params = new URLSearchParams({ hl: "en-IN", gl: "IN", ceid: "IN:en" });
+  let endpoint = "https://news.google.com/rss";
+  if (query) {
+    endpoint += "/search";
+    params.set("q", [query, category].filter(Boolean).join(" "));
+  } else if (category && topicMap[category]) {
+    endpoint += `/headlines/section/topic/${topicMap[category]}`;
+  }
 
+  const response = await fetch(`${endpoint}?${params}`, { signal: AbortSignal.timeout(8000) });
+  if (!response.ok) throw new Error("Google News RSS is unavailable.");
+  const feed = await rssParser.parseString(await response.text());
+  return (feed.items || []).map((item) => ({
+    title: item.title,
+    category: category || "World",
+    excerpt: item.contentSnippet || "Open the publisher's report for the full story.",
+    author: "Google News",
+    date: item.isoDate ? new Date(item.isoDate).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : item.pubDate || "Latest",
+    url: item.link
+  }));
+}
+
+app.get("/api/news", async (req, res) => {
   const category = String(req.query.category || "");
   const query = String(req.query.q || "").trim();
+  if (!GNEWS_API_KEY) {
+    try {
+      const articles = await getGoogleNewsArticles(category, query);
+      res.set("Cache-Control", "public, max-age=120");
+      return res.json({ source: "google-news-rss", articles });
+    } catch (error) {
+      return res.json({ source: "demo", articles: [] });
+    }
+  }
+
   const categoryMap = { India: "nation", World: "world", Technology: "technology", Sports: "sports", Business: "business", Entertainment: "entertainment" };
   const params = new URLSearchParams({ lang: "en", max: "10", apikey: GNEWS_API_KEY });
   let endpoint = "https://gnews.io/api/v4/top-headlines";
