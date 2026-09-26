@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newz Wave | Latest News</title>
+    <meta name="description" content="Latest news from India and around the world, across technology, sports, business, and entertainment." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav container">
+        <a class="brand" href="index.html">
+          <img src="img/sklogo.jpg" alt="Newz Wave logo" class="brand-logo" />
+          <span>Newz Wave</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="categiores.html">Categories</a>
+          <a href="bookmark.html">Bookmarks</a>
+          <a href="login.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div class="hero-copy">
+          <p class="eyebrow">Your daily briefing</p>
+          <h1>Newz Wave</h1>
+          <p>
+            The stories shaping India and the world, updated throughout the day.
+          </p>
+          <div class="cta-group">
+            <a class="btn btn-primary" href="categiores.html">Explore categories</a>
+            <a class="btn btn-secondary" href="register.html">Create account</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>Today on Newz Wave</h3>
+          <ul>
+            <li>India and world headlines</li>
+            <li>Technology, sports, business, entertainment</li>
+            <li>Save stories and build your reading list</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Latest updates</p>
+            <h2>Top stories</h2>
+          </div>
+          <p id="newsSourceStatus" class="source-status" aria-live="polite">Loading news source...</p>
+          <a href="categiores.html">Browse all categories</a>
+        </div>
+        <div id="categoryPills" class="chip-row"></div>
+        <div id="newsGrid" class="news-grid"></div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>Newz Wave © 2026</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

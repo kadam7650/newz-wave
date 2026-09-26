@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | NewzWave</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav container">
+        <a class="brand" href="index.html">NewzWave</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="categiores.html">Categories</a>
+          <a href="bookmark.html">Bookmarks</a>
+          <a href="login.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="auth-shell container">
+      <section class="form-card">
+        <h2>Create your account</h2>
+        <p>Start your curated news journey with personalized alerts and bookmarks.</p>
+        <form id="registerForm">
+          <input name="name" type="text" placeholder="Full name" autocomplete="name" required />
+          <input name="email" type="email" placeholder="Email" autocomplete="email" required />
+          <input name="password" type="password" placeholder="Password (8 characters minimum)" minlength="8" autocomplete="new-password" required />
+          <button class="submit-btn" type="submit">Register</button>
+        </form>
+        <p class="form-footnote">Already registered? <a href="login.html">Log in</a></p>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

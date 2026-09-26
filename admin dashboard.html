@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | NewzWave</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <nav class="nav container">
+        <a class="brand" href="index.html">NewzWave</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="categiores.html">Categories</a>
+          <a href="bookmark.html">Bookmarks</a>
+          <a href="login.html">Login</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="dashboard-shell container">
+      <section class="dashboard-card">
+        <h2>Admin dashboard</h2>
+        <p>Publish stories, assign categories, and keep your newsroom live.</p>
+        <form id="adminArticleForm">
+          <input name="adminKey" type="password" placeholder="Admin key" autocomplete="off" required />
+          <input name="title" type="text" placeholder="Story title" required />
+          <select name="category">
+            <option>India</option>
+            <option>World</option>
+            <option>Technology</option>
+            <option>Sports</option>
+            <option>Business</option>
+            <option>Entertainment</option>
+          </select>
+          <textarea name="excerpt" placeholder="Write a short summary" required></textarea>
+          <input name="author" type="text" placeholder="Author name" required />
+          <button class="submit-btn" type="submit">Publish article</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
